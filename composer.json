@@ -1,0 +1,27 @@
+{
+    "name": "it-yakutia/yii2-quiz",
+    "description": "Quiz server for yii2",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"," quiz"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ayaal Kpalin",
+            "email": "ayaalkaplin@mytona.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "uraankhayayaal/yii2-sortable": "*",
+        "uraankhayayaal/yii2-materializecomponents": "*",
+        "uraankhayayaal/yii2-redactor": "*"
+    },
+    "extra": {
+        "bootstrap": "ityakutia\\quiz\\Bootstrap"
+    },
+    "autoload": {
+        "psr-4": {
+            "ityakutia\\quiz\\": "src"
+        }
+    }
+}
