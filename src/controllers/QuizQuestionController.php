@@ -13,6 +13,7 @@ use ityakutia\quiz\models\QuizQuestion;
 use ityakutia\quiz\models\QuizQuestionSearch;
 use ityakutia\quiz\models\Quiz;
 use uraankhayayaal\sortable\actions\Sorting;
+use yii\web\NotFoundHttpException;
 
 
 class QuizQuestionController extends Controller

@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use ityakutia\quiz\models\QuizResult;
 use ityakutia\quiz\models\QuizResultSearch;
 use uraankhayayaal\materializecomponents\imgcropper\actions\UploadAction;
+use yii\web\NotFoundHttpException;
 
 class QuizResultController extends Controller
 {

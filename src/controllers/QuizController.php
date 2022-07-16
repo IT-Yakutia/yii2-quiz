@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 
 use ityakutia\quiz\models\Quiz;
 use ityakutia\quiz\models\QuizSearch;

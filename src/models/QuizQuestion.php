@@ -8,7 +8,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use yii\behaviors\TimestampBehavior;
-use uraankhayayaal\sortable\behaviors;
+use uraankhayayaal\sortable\behaviors\Sortable;
 
 
 /**

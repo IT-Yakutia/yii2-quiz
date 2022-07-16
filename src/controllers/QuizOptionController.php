@@ -14,6 +14,7 @@ use ityakutia\quiz\models\QuizOptionSearch;
 use ityakutia\quiz\models\QuizQuestion;
 use uraankhayayaal\materializecomponents\imgcropper\actions\UploadAction;
 use uraankhayayaal\sortable\actions\Sorting;
+use yii\web\NotFoundHttpException;
 
 
 class QuizOptionController extends Controller

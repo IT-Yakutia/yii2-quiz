@@ -4,7 +4,7 @@
 namespace ityakutia\quiz\models;
 
 
-use uraankhayayaal\sortable\behaviors;
+use uraankhayayaal\sortable\behaviors\Sortable;
 use common\models\User;
 use Yii;
 use yii\behaviors\TimestampBehavior;
