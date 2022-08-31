@@ -35,8 +35,7 @@ class QuizAnswer extends Model
     public function make()
     {
         // получил тип квиза
-        $quiz_type = QuizQuestion::find()->where(['id' => $this->quiz_answers[0]['quiz_question_id']])->one()->quiz->type;
-
+        $quiz_type = Quiz::findOne($this->quiz_id)->type;
         switch ($quiz_type) {
             case Quiz::TYPE_STANDARD : return $this->makeStandardResult();
             case Quiz::TYPE_RATING : return $this->makeRatingResult();
@@ -44,6 +43,9 @@ class QuizAnswer extends Model
         }
     }
 
+    /*
+     * Стандартный - Балловая система с определенным резульатом
+     */
     private function makeStandardResult() : bool
     {
         $result = [];
@@ -76,17 +78,24 @@ class QuizAnswer extends Model
         return true;
     }
 
+    /*
+     * Рейтинговый - Ответы с правильным вариантом
+     */
     private function makeRatingResult()
     {
         $rate = 0;
-        $question_id = '';
-        foreach ($this->quiz_answers as $answer) {
-            $question_id = $answer['quiz_question_id'];
-            $client_options = $answer['quiz_option_ids'];
-
+        foreach ($this->quiz_answers as $question_id => $answer) {
+            $questionModel = QuizQuestion::findOne($question_id);
+            if ($questionModel->type == QuizQuestion::TYPE_MULTISELECT) {
+                // мультселект
+                $client_options = array_keys($answer);
+            } else {
+                // едиственный верный
+                $client_options = [$answer['radio']];
+            }
             $correct_options = [];
-            $options = QuizQuestion::findOne($question_id)->quizOptions;
-            foreach ($options as $option) {
+            // $options = $questionModel->quizOptions;
+            foreach ($questionModel->quizOptions as $option) {
                 if($option->correct_answer) {
                     $correct_options[] = $option->id;
                 }
@@ -97,18 +106,22 @@ class QuizAnswer extends Model
             }
         }
 
-        $quiz_id = QuizQuestion::findOne($question_id)->quiz_id;
-        $result = QuizResult::find()->where(['quiz_id' => $quiz_id])->andWhere(['<=', 'min_limit', $rate])->andWhere(['>=', 'max_limit', $rate])->one();
-        $result->description = str_replace('[RATE]', $rate, $result->description);
-        $this->result = $result;
+        $quizUserAnswer = new QuizUserAnswer();
+        $quizUserAnswer->quiz_id = $this->quiz_id;
+        $quizUserAnswer->answers = json_encode($this->quiz_answers);
+        $quizUserAnswer->browser_agent = Yii::$app->request->userAgent;
+        $quizUserAnswer->ip = Yii::$app->request->userIP;
+        if ($quizUserAnswer->save()) {
+            return $quizUserAnswer;
+        } else {
+            var_dump($quizUserAnswer->errors);die;
+        }
 
-        return true;
+        return false;
     }
 
     public function result()
     {
         return $this->result;
     }
-
-
 }

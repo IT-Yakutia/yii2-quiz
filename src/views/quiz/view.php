@@ -43,148 +43,189 @@ if($model->type === 1) {
 <div class="quiz-view">
     <div class="row">
         <div class="col s12">
-            <ul class="collapsible">
-                <li>
-                    <div class="collapsible-header tooltipped" data-position="bottom"
-                         data-tooltip="<?= Yii::t('app', 'Нажмите чтобы открыть или закрыть') ?>"><i
-                                class="material-icons">filter_drama</i>Результаты
-                    </div>
-                    <div class="collapsible-body">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <?= Html::a('Редактировать конкурс', ['update', 'id' => $model->id], ['class' => 'btn']) ?>
+                        </td>
+                        <td>
+                            Тип конкурса: <span class="chip <?= ($model->type === $model::TYPE_RATING ? 'lime' : 'cyan') ?> lighten-4"><?= $model::TYPES[$model->type] ?></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="fixed-action-btn">
+                <?= Html::a('<i class="material-icons">edit</i>', ['update', 'id' => $model->id], [
+                    'class' => 'btn-floating btn-large waves-effect waves-light tooltipped',
+                    'title' => 'Редактировать',
+                    'data-position' => "left",
+                    'data-tooltip' => "Редактировать",
+                ]) ?>
+            </div>
+        </div>
+    </div>
 
-                        <?= Html::a('Добавить результат', ['/quiz/quiz-result/create', 'quiz_id' => $model->id], ['class' => 'btn']) ?>
+    <div class="row">
+        <div class="col s12 m3">
+            <h5>Результаты</h5>
+            <?= Html::a('Добавить результат', ['/quiz/quiz-result/create', 'quiz_id' => $model->id], ['class' => 'btn']) ?>
 
-                        <div class="row">
+            <div class="row">
+                <div class="col s12">
+                    <table class="striped bordered my-responsive-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Наименование</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
                             <?php foreach ($model->quizResults as $key => $result) { ?>
-                                <div class="col s6 m4 l2">
-                                    <div class="card">
-                                        <div class="card-image waves-effect waves-block waves-light">
-                                            <img class="activator" src="<?= $result->photo ?>"
-                                                 alt="<?= $result->title ?>">
-                                        </div>
-                                        <div class="card-content">
-                                            <span class="card-title activator grey-text text-darken-4"><?= $result->title ?><i
-                                                        class="material-icons right">more_vert</i></span>
-                                            <p>
-                                                <?= Html::a('<i class="material-icons">edit</i>', ['/quiz/quiz-result/update', 'id' => $result->id, 'quiz_id' => $result->quiz_id]) ?>
-                                                <?= Html::a('<i class="material-icons">delete</i>', ['/quiz/quiz-result/delete', 'id' => $result->id], ['data-confirm' => "Вы уверены, что хотите удалить этот элемент?", 'data-method' => "post"]) ?>
-                                            </p>
-                                        </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4"><?= $result->title ?><i
-                                                        class="material-icons right">close</i></span>
-                                            <p><?= $result->description ?></p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <tr>
+                                    <td>
+                                        <?= Html::a('<i class="material-icons">edit</i>', ['/quiz/quiz-result/update', 'id' => $result->id, 'quiz_id' => $result->quiz_id]) ?>
+                                    </td>
+                                    <td>
+                                        <?= $result->title ?>
+                                    </td>
+                                    <td>
+                                        <?= Html::a('<i class="material-icons">delete</i>', ['/quiz/quiz-result/delete', 'id' => $result->id], ['data-confirm' => "Вы уверены, что хотите удалить этот элемент?", 'data-method' => "post"]) ?>
+                                    </td>
+                                </tr>
                             <?php } ?>
-                        </div>
-                    </div>
+                            <?php if (empty($model->quizResults)) { ?>
+                                <tr>
+                                    <td colspan="2">
+                                        Ничего не найдено.
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        </li>
-        </ul>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s12 m4">
-        <h5>Вопросы</h5>
-        <div>
-            <?= Html::a('Добавить вопрос', ['/quiz/quiz-question/create', 'quiz_id' => $model->id], ['class' => 'btn']) ?>
-        </div>
-        <ul class="collection">
-            <?php
-            foreach ($model->quizQuestions as $key => $question) {
-                $question_active = '';
-                $question_text_active = 'black-text';
-                if($activeQuestion !== null && $question->id == $activeQuestion->id) {
-                    $question_active = 'active';
-                    $question_text_active = 'white-text';
-                }
-
-                ?>
-                <li class="collection-item <?= $question_active ?>">
-                    <div>
-                        <?= Html::a('<i class="material-icons ' . ($question->is_publish ? '' : 'red-text') . '">' . ($question->is_publish ? 'done' : 'clear') . '</i>', ['view', 'id' => $model->id, 'question_id' => $question->id], ['class' => 'secondary-content']) ?>
-                        <?= Html::a($question->title, ['view', 'id' => $model->id, 'question_id' => $question->id], ['class' => 'truncate ' . $question_text_active, 'style' => 'width: calc(100% - 30px);']) ?>
-                    </div>
-                </li>
+        <div class="col s12 m3">
+            <h5>Вопросы</h5>
+            <div>
+                <?= Html::a('Добавить вопрос', ['/quiz/quiz-question/create', 'quiz_id' => $model->id], ['class' => 'btn']) ?>
+            </div>
+            <ul class="collection" style="overflow: visible;">
                 <?php
-            }
-            ?>
-        </ul>
-    </div>
-    <div class="col s12 m8">
-        <h5>Варианты ответов</h5>
-        <?php if($activeQuestion == null) { ?>
-            <p class="grey-text">Выберите вопрос слева или</p>
-            <p class="grey-text">Добавьте сперва результаты
-                квиза: <?= Html::a('Добавить результат', ['/quiz/quiz-result/create', 'quiz_id' => $model->id]) ?></p>
-        <?php } else { ?>
-            <?= Html::a('Редактировать вопрос', ['/quiz/quiz-question/update', 'id' => $activeQuestion->id, 'quiz_id' => $model->id], ['class' => 'btn']) ?>
-            <?= Html::a('Удалить вопрос', ['/quiz/quiz-question/delete', 'id' => $activeQuestion->id, 'quiz_id' => $model->id], ['class' => 'btn', 'data-confirm' => "Вы уверены, что хотите удалить этот элемент?", 'data-method' => "post"]) ?>
-            <hr>
+                foreach ($model->quizQuestions as $key => $question) {
+                    $question_active = '';
+                    $question_text_active = 'black-text';
+                    if($activeQuestion !== null && $question->id == $activeQuestion->id) {
+                        $question_active = 'active';
+                        $question_text_active = 'white-text';
+                    }
 
-            <?= Html::a('Добавить вариант ответа', ['/quiz/quiz-option/create', 'quiz_question_id' => $activeQuestion->id], ['class' => 'btn']) ?>
-            <?= GridView::widget([
-                'tableOptions' => [
-                    'class' => 'striped bordered my-responsive-table',
-                    'id' => 'sortable'
-                ],
-                'rowOptions' => function($model, $key, $index, $grid) {
-                    return ['data-sortable-id' => $model->id];
-                },
-                'options' => [
-                    'data' => [
-                        'sortable-widget' => 1,
-                        'sortable-url' => Url::toRoute(['/quiz/quiz-option/sorting']),
-                    ]
-                ],
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    ['class' => MaterialActionColumn::class, 'controller' => '/quiz/quiz-option', 'template' => '{view} {update}'],
+                    ?>
+                    <li class="collection-item <?= $question_active ?>">
+                        <div>
+                            <a class='dropdown-trigger secondary-content' href='#' data-target='dropdown-<?= $question->id ?>'><i class="material-icons">more</i></a>
+                            <ul id='dropdown-<?= $question->id ?>' class='dropdown-content'>
+                                <li><?= Html::a('<i class="material-icons">edit</i>', ['/quiz/quiz-question/update', 'id' => $question->id, 'quiz_id' => $model->id]) ?></li>
+                                <li><?= Html::a('<i class="material-icons">delete</i>', ['/quiz/quiz-question/delete', 'id' => $question->id, 'quiz_id' => $model->id], ['data-confirm' => "Вы уверены, что хотите удалить этот элемент?", 'data-method' => "post"]) ?></li>
+                                <li class="divider" tabindex="-1"></li>
+                                <li><a class="disabled"><i class="material-icons <?= ($question->is_publish ? '' : 'red-text') ?>"><?= ($question->is_publish ? 'done' : 'clear') ?></i></a></li>
+                            </ul>
+                            <?= Html::a($question->title, ['view', 'id' => $model->id, 'question_id' => $question->id], ['class' => 'truncate ' . $question_text_active, 'style' => 'width: calc(100% - 30px);']) ?>
+                        </div>
+                    </li>
+                    <?php
+                }
+                ?>
+                <?php if (empty($model->quizQuestions)) { ?>
+                    <li class="collection-item empty">
+                        Ничего не найдено.
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+        <div class="col s12 m6">
+            <h5>Варианты ответов</h5>
+            <?php if (empty($model->quizQuestions)) { ?>
+                <p class="grey-text"><?= Html::a('Добавьте', ['/quiz/quiz-question/create', 'quiz_id' => $model->id]) ?> вопросы для конкурса.</p>
+            <?php } ?>
+            <?php if (empty($model->quizResults)){ ?>
+                <p class="grey-text"><?= Html::a('Добавьте', ['/quiz/quiz-result/create', 'quiz_id' => $model->id]) ?> результаты конкурса.</p>
+            <?php } ?>
+            <?php if(empty($model->quizQuestions) || $activeQuestion == null) { ?>
+                <p class="grey-text">Выберите вопрос слева.</p>
+            <?php } else { ?>
+                <?= Html::a('Добавить вариант ответа', ['/quiz/quiz-option/create', 'quiz_question_id' => $activeQuestion->id], ['class' => 'btn']) ?>
+                <?= GridView::widget([
+                    'tableOptions' => [
+                        'class' => 'striped bordered my-responsive-table',
+                        'id' => 'sortable'
+                    ],
+                    'rowOptions' => function($model, $key, $index, $grid) {
+                        return ['data-sortable-id' => $model->id];
+                    },
+                    'options' => [
+                        'data' => [
+                            'sortable-widget' => 1,
+                            'sortable-url' => Url::toRoute(['/quiz/quiz-option/sorting']),
+                        ]
+                    ],
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        ['class' => MaterialActionColumn::class, 'controller' => '/quiz/quiz-option', 'template' => '{view} {update}'],
 
-                    [
-                        'header' => 'Фото',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            return $model->src ? '<img class="materialboxed" src="' . $model->src . '" width="70">' : '';
-                        }
+                        // [
+                        //     'header' => 'Фото',
+                        //     'format' => 'raw',
+                        //     'value' => function($model) {
+                        //         return $model->src ? '<img class="materialboxed" src="' . $model->src . '" width="70">' : '';
+                        //     }
+                        // ],
+                        [
+                            'attribute' => 'title',
+                            'header' => 'Вариант ответа',
+                            'format' => 'raw',
+                            'value' => function($model) {
+                                return Html::a($model->title, ['/quiz/quiz-option/update', 'id' => $model->id]);
+                            }
+                        ],
+                        $results,
+                        [
+                            'attribute' => 'is_publish',
+                            'format' => 'raw',
+                            'value' => function($model) {
+                                return $model->is_publish ? '<i class="material-icons green-text">done</i>' : '<i class="material-icons red-text">clear</i>';
+                            },
+                            'filter' => [0 => 'Нет', 1 => 'Да'],
+                        ],
+                        ['class' => MaterialActionColumn::class, 'controller' => '/quiz/quiz-option', 'template' => '{delete}'],
+                        [
+                            'class' => Column::class,
+                        ],
                     ],
-                    [
-                        'attribute' => 'title',
-                        'header' => 'Вариант ответа',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            return Html::a($model->title, ['/quiz/quiz-option/update', 'id' => $model->id]);
-                        }
+                    'pager' => [
+                        'class' => 'yii\widgets\LinkPager',
+                        'options' => ['class' => 'pagination center'],
+                        'prevPageCssClass' => '',
+                        'nextPageCssClass' => '',
+                        'pageCssClass' => 'waves-effect',
+                        'nextPageLabel' => '<i class="material-icons">chevron_right</i>',
+                        'prevPageLabel' => '<i class="material-icons">chevron_left</i>',
                     ],
-                    $results,
-                    [
-                        'attribute' => 'is_publish',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            return $model->is_publish ? '<i class="material-icons green-text">done</i>' : '<i class="material-icons red-text">clear</i>';
-                        },
-                        'filter' => [0 => 'Нет', 1 => 'Да'],
-                    ],
-                    ['class' => MaterialActionColumn::class, 'controller' => '/quiz/quiz-option', 'template' => '{delete}'],
-                    [
-                        'class' => Column::class,
-                    ],
-                ],
-                'pager' => [
-                    'class' => 'yii\widgets\LinkPager',
-                    'options' => ['class' => 'pagination center'],
-                    'prevPageCssClass' => '',
-                    'nextPageCssClass' => '',
-                    'pageCssClass' => 'waves-effect',
-                    'nextPageLabel' => '<i class="material-icons">chevron_right</i>',
-                    'prevPageLabel' => '<i class="material-icons">chevron_left</i>',
-                ],
-            ]); ?>
-        <?php } ?>
+                ]); ?>
+            <?php } ?>
+        </div>
     </div>
 </div>
-</div>
+
+<?php
+
+$this->registerJS("
+    $('.dropdown-trigger').dropdown();
+", static::POS_READY);
+
+?>

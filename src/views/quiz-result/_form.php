@@ -1,6 +1,7 @@
 <?php
 
 use uraankhayayaal\materializecomponents\imgcropper\Cropper;
+use uraankhayayaal\materializecomponents\checkbox\WCheckbox;
 use ityakutia\quiz\models\Quiz;
 use yii\helpers\Html;
 use yii\helpers\Url;

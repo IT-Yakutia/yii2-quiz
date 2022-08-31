@@ -6,12 +6,13 @@ use yii\grid\GridView;
 use uraankhayayaal\materializecomponents\grid\MaterialActionColumn;
 use uraankhayayaal\sortable\grid\Column;
 
-$this->title = 'Квизы';
+$this->title = 'Конкурсы';
 
 ?>
 <div class="quiz-index">
     <div class="row">
         <div class="col s12">
+            <p>Это модуль для проведения онлайн тестирования, также можно использовать как онлайн квиз или конкурс.</p>
             <p>
                 <?= Html::a('Добавить', ['create'], ['class' => 'btn']) ?>
             </p>
@@ -42,7 +43,7 @@ $this->title = 'Квизы';
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    ['class' => MaterialActionColumn::class, 'template' => '{view} {update}'],
+                    // ['class' => MaterialActionColumn::class, 'template' => '{view} {update}'],
 
                     [
                         'header' => 'Фото',
@@ -62,14 +63,14 @@ $this->title = 'Квизы';
                         'attribute' => 'type',
                         'format' => 'raw',
                         'value' => function($model) {
-                            return $model->type === 1 ? 'Рейтинговый' : 'Стандартный';
+                            return '<span class="chip ' . ($model->type === $model::TYPE_RATING ? 'lime' : 'cyan') . ' lighten-4">' . ($model::TYPES[$model->type]) . '</span>';
                         }
                     ],
                     [
                         'attribute' => 'slug',
                         'format' => 'raw',
                         'value' => function($model){
-                            return Html::a('<span class="grey-text">'.Yii::$app->params['domain'].'</span>quiz/'.$model->slug, '/quiz/'.$model->slug, ['target' => "_blank"]);
+                            return Html::a('<span class="grey-text">'.Yii::$app->params['domain'].'</span>/quiz/front/view?slug='.$model->slug, '/quiz/front/view?slug='.$model->slug, ['target' => "_blank"]);
                         },
                     ],
                     [

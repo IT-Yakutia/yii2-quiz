@@ -3,8 +3,10 @@
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
 
-$this->title = "Квизы";
+$this->title = "Конкурсы";
 
+// $this->params['breadcrumbs'][] = ['label' => "Все конкурсы", 'url' => ['/quiz/front/index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <section class="container quiz-index">
