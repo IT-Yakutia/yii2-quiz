@@ -19,7 +19,8 @@ use yii\widgets\ActiveForm;
             <?= WCheckbox::widget(['model' => $model, 'attribute' => 'is_publish']); ?>
         </div>
         <div class="col s12 m6">
-            <?= $form->field($model, 'type')->dropDownList($model::TYPES) ?>
+            <?= $form->field($model, 'type')->hiddenInput(['value' => $model::TYPE_RATING])->label(false) ?>
+            <?php // $form->field($model, 'type')->dropDownList($model::TYPES) ?>
         </div>
     </div>
 
@@ -41,13 +42,13 @@ use yii\widgets\ActiveForm;
     <?php } ?>
 
     <?= $form->field($model, 'photo')->widget(Cropper::class, [
-        'aspectRatio' => 350/540,
-        'maxSize' => [540, 350, 'px'],
-        'minSize' => [10, 10, 'px'],
+        'aspectRatio' => 720/1280,
+        'maxSize' => [1280, 720, 'px'],
+        'minSize' => [128, 72, 'px'],
         'startSize' => [100, 100, '%'],
         'uploadUrl' => Url::to(['/quiz/quiz/uploadImg']),
     ]); ?>
-    <small class="grey-text">Загружать изображения размером 540x350 пикселей</small>
+    <small class="grey-text">Загружать изображения размером 1280x720 пикселей</small>
 
     <?= $form->field($model, 'meta_description')->textInput(['maxlength' => true]) ?>
 

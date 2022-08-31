@@ -59,13 +59,13 @@ $this->title = 'Конкурсы';
                             return Html::a($model->title,['view', 'id' => $model->id]);
                         }
                     ],
-                    [
-                        'attribute' => 'type',
-                        'format' => 'raw',
-                        'value' => function($model) {
-                            return '<span class="chip ' . ($model->type === $model::TYPE_RATING ? 'lime' : 'cyan') . ' lighten-4">' . ($model::TYPES[$model->type]) . '</span>';
-                        }
-                    ],
+                    // [
+                    //     'attribute' => 'type',
+                    //     'format' => 'raw',
+                    //     'value' => function($model) {
+                    //         return '<span class="chip ' . ($model->type === $model::TYPE_RATING ? 'lime' : 'cyan') . ' lighten-4">' . ($model::TYPES[$model->type]) . '</span>';
+                    //     }
+                    // ],
                     [
                         'attribute' => 'slug',
                         'format' => 'raw',

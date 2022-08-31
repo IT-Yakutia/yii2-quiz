@@ -33,7 +33,7 @@ if($model->type === 1) {
         'header' => 'Правильность ответа',
         'format' => 'raw',
         'value' => function($modelOption) {
-            return $modelOption->correct_answer ? 'Правильный' : 'Неправильный';
+            return $modelOption->correct_answer ? '<span class="chip green lighten-3">Правильный</span>' : '<span class="chip red lighten-3">Неправильный</span>';
         }
     ];
 }
@@ -49,9 +49,9 @@ if($model->type === 1) {
                         <td>
                             <?= Html::a('Редактировать конкурс', ['update', 'id' => $model->id], ['class' => 'btn']) ?>
                         </td>
-                        <td>
+                        <!-- <td>
                             Тип конкурса: <span class="chip <?= ($model->type === $model::TYPE_RATING ? 'lime' : 'cyan') ?> lighten-4"><?= $model::TYPES[$model->type] ?></span>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -67,7 +67,7 @@ if($model->type === 1) {
     </div>
 
     <div class="row">
-        <div class="col s12 m3">
+        <!-- <div class="col s12 m3">
             <h5>Результаты</h5>
             <?= Html::a('Добавить результат', ['/quiz/quiz-result/create', 'quiz_id' => $model->id], ['class' => 'btn']) ?>
 
@@ -107,8 +107,8 @@ if($model->type === 1) {
                     </table>
                 </div>
             </div>
-        </div>
-        <div class="col s12 m3">
+        </div> -->
+        <div class="col s12 m4">
             <h5>Вопросы</h5>
             <div>
                 <?= Html::a('Добавить вопрос', ['/quiz/quiz-question/create', 'quiz_id' => $model->id], ['class' => 'btn']) ?>
@@ -146,14 +146,14 @@ if($model->type === 1) {
                 <?php } ?>
             </ul>
         </div>
-        <div class="col s12 m6">
+        <div class="col s12 m8">
             <h5>Варианты ответов</h5>
             <?php if (empty($model->quizQuestions)) { ?>
                 <p class="grey-text"><?= Html::a('Добавьте', ['/quiz/quiz-question/create', 'quiz_id' => $model->id]) ?> вопросы для конкурса.</p>
             <?php } ?>
-            <?php if (empty($model->quizResults)){ ?>
+            <?php /* if (empty($model->quizResults)){ ?>
                 <p class="grey-text"><?= Html::a('Добавьте', ['/quiz/quiz-result/create', 'quiz_id' => $model->id]) ?> результаты конкурса.</p>
-            <?php } ?>
+            <?php } */ ?>
             <?php if(empty($model->quizQuestions) || $activeQuestion == null) { ?>
                 <p class="grey-text">Выберите вопрос слева.</p>
             <?php } else { ?>

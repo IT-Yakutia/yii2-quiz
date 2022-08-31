@@ -70,7 +70,6 @@ class FrontController extends Controller
         $quiz = $this->findModelBySlug($slug);
         $quizUserAnswer = QuizUserAnswer::findOne($quizUserAnswerId);
         $model = new QuizAnswer();
-        $quizResult = $model->result();
 
         return $this->render($view, [
             'quizResult' => $quizResult,
