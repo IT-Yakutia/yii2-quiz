@@ -1,8 +1,9 @@
 <?php
 
+use ityakutia\share\ShareWidget;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => "Все конкурсы", 'url' => ['/quiz/front/index']];
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-12 col-md-3">
             <p><?= Html::img($model->photo, ['alt' => $model->title, 'class' => 'w-100 mw-100']) ?></p>
             <h4>Поделиться в социальных сетях:</h4>
-            <?= \ityakutia\share\ShareWidget::widget(); ?>
+            <?= ShareWidget::widget(); ?>
         </div>
         <div class="col-12 col-md-9">
 
