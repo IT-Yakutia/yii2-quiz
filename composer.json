@@ -15,7 +15,7 @@
         "uraankhayayaal/yii2-sortable": "*",
         "uraankhayayaal/yii2-materializecomponents": "*",
         "uraankhayayaal/yii2-redactor": "*",
-        "ityakutia/yii2-share": "*"
+        "it-yakutia/yii2-share": "*"
     },
     "extra": {
         "bootstrap": "ityakutia\\quiz\\Bootstrap"
