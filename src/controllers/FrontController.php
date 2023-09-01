@@ -68,11 +68,12 @@ class FrontController extends Controller
             $view = Yii::$app->params['custom_view_for_modules']['quiz_front']['result'];
 
         $quiz = $this->findModelBySlug($slug);
-        $quizUserAnswer = QuizUserAnswer::findOne($quizUserAnswerId);
-        $model = new QuizAnswer();
+        
+        if (($quizUserAnswer = QuizUserAnswer::findOne($quizUserAnswerId)) === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
         return $this->render($view, [
-            'quizResult' => $quizResult,
             'quiz' => $quiz,
             'quizUserAnswer' => $quizUserAnswer,
         ]);
